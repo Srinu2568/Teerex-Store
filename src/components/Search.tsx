@@ -10,6 +10,7 @@ const Search: React.FC = () => {
       pt-12 gap-2 sm:gap-4'
 		>
 			<input
+				id='search'
 				className='border-b-2 border-gray-500 
           pb-2 pl-1 sm:pr-64 max-sm:mt-8
           focus-visible:outline-none '

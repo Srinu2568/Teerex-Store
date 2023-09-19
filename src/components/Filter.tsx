@@ -1,18 +1,24 @@
 import { ChangeEvent } from 'react';
 import CheckBox from './CheckBox';
-
-const filterHandler = (e: ChangeEvent<HTMLInputElement>) => {
-	console.log(e.target.id, e.target.value);
-};
+import { useAppDispatch } from '../redux-types/hooks';
+import { filter } from '../store/productSlice';
 
 const Filter: React.FC = () => {
+	const dispatch = useAppDispatch();
+
+	const filterHandler = (e: ChangeEvent<HTMLInputElement>) => {
+		dispatch(filter([e.target.value, e.target.id]));
+	};
+
 	return (
-		<div className='
+		<div
+			className='
 			flex flex-col justify-center 
 			items-start gap-2
 			py-5 pl-8 pr-36 max-lg:pr-20 
 			shadow-xl rounded-md
-		'>
+		'
+		>
 			<div>
 				<h4 className='text-lg font-bold my-2'>Colour</h4>
 				<CheckBox id='Red' label='Red' value='color' onChange={filterHandler} />
