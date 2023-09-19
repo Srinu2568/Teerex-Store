@@ -13,6 +13,13 @@ export interface productDataInterface {
 	quantity: number;
 }
 
+type checkedDataType = {
+	color: ['Red' | 'Blue' | 'Green'] | [];
+	gender: ['Men' | 'Women'] | [];
+	price: ['250' | '251' | '450'] | [];
+	type: ['Polo' | 'Hoodie' | 'Basic'] | [];
+};
+
 interface initialDataInterface {
 	fetchedData: productDataInterface[];
 	filterData: productDataInterface[];
@@ -20,13 +27,6 @@ interface initialDataInterface {
 	error: string | undefined;
 	checkBoxData: checkedDataType;
 }
-
-type checkedDataType = {
-	color: ['Red' | 'Blue' | 'Green'] | [];
-	gender: ['Men' | 'Women'] | [];
-	price: ['250' | '251' | '450'] | [];
-	type: ['polo' | 'hoodie' | 'basic'] | [];
-};
 
 const initialData: initialDataInterface = {
 	fetchedData: [],
@@ -36,6 +36,7 @@ const initialData: initialDataInterface = {
 	checkBoxData: { color: [], gender: [], price: [], type: [] },
 };
 
+// Asynchronous function to fetch products
 export const fetchProducts = createAsyncThunk(
 	'product/fetchProducts',
 	async () => {
@@ -55,6 +56,7 @@ export const productSlice = createSlice({
 	initialState: initialData,
 	reducers: {
 		filter: (state, action) => {
+			// ------- Logic to set the checkBoxData ------------------
 			let checkedData: [string, string] = action.payload;
 			let type = checkedData[0]; // type : 'color' | 'gender' ...
 			let value = checkedData[1]; // value: 'Red' | 'Men' ...
@@ -65,11 +67,46 @@ export const productSlice = createSlice({
 				);
 				checkedDataState[type] = newCheckBoxData;
 			} else {
-				checkedDataState[type] = [value, ...(state.checkBoxData as any)[type]];
+				checkedDataState[type] = [value, ...checkedDataState[type]]; //Adding the value to checkBoxData.type
 			}
+			// -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
+			// -----------------Updating filterData-----------------
+			let filteredData = state.fetchedData.filter((item) => {
+				if (checkedDataState['color'].includes(item['color'])) {
+					return true;
+				} else if (checkedDataState['gender'].includes(item['gender'])) {
+					return true;
+				} else if (checkedDataState['price'].includes(String(item['price']))) {
+					if (item['price'] <= 250) {
+						return true;
+					} else if (item['price'] >= 251 && item['price'] < 450) {
+						return true;
+					} else if (item['price'] >= 450) {
+						return true;
+					} else {
+						return false;
+					}
+				} else if (checkedDataState['type'].includes(item['type'])) {
+					return true;
+				} else {
+					return false;
+				}
+			});
+			// Set the filteredData state
+			state.filterData = [...filteredData];
+
+			// -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
 			// Debug logs
-			// console.log(current(state.checkBoxData));
+			// console.log(current(checkedDataState)); //current gives us the current state, helpful while consoling the state in reducers. If not used, will get a proxy array which is an immediate return value not committed yer.
 			// console.log(current(state.fetchedData));
+			try {
+				console.log(current(state.filterData));
+			} catch {
+				console.log(state.filterData);
+			}
+			//
 		},
 	},
 	extraReducers(builder) {
@@ -80,6 +117,7 @@ export const productSlice = createSlice({
 			.addCase(fetchProducts.fulfilled, (state, action) => {
 				state.status = 'succeeded';
 				state.fetchedData = state.fetchedData.concat(action.payload);
+				state.filterData = state.fetchedData.concat(action.payload);
 			})
 			.addCase(fetchProducts.rejected, (state, action) => {
 				state.status = 'failed';

@@ -74,19 +74,19 @@ const Filter: React.FC = () => {
 			<div>
 				<h4 className='text-lg font-bold my-2'>Type</h4>
 				<CheckBox
-					id='polo'
+					id='Polo'
 					label='Polo'
 					value='type'
 					onChange={filterHandler}
 				/>
 				<CheckBox
-					id='hoodie'
+					id='Hoodie'
 					label='Hoodie'
 					value='type'
 					onChange={filterHandler}
 				/>
 				<CheckBox
-					id='basic'
+					id='Basic'
 					label='Basic'
 					value='type'
 					onChange={filterHandler}
