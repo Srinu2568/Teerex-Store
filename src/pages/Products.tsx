@@ -1,17 +1,8 @@
 import Filter from '../components/Filter';
+import ProductItems from '../components/product/ProductItems';
 import Search from '../components/Search';
-import { useAppSelector, useAppDispatch } from '../redux-types/hooks';
-import { fetchProducts } from '../store/productSlice';
-import { useEffect } from 'react';
 
 const Products: React.FC = () => {
-	const dispatch = useAppDispatch();
-	const { fetchedData, status } = useAppSelector((state) => state.product);
-	useEffect(() => {
-		if (status === 'idle') {
-			dispatch(fetchProducts());
-		}
-	}, [dispatch, status]);
 	return (
 		<>
 			<section className='padding-x padding-t pb-10'>
@@ -19,15 +10,17 @@ const Products: React.FC = () => {
 			</section>
 			<section
 				className='
-				flex justify-between 
+				flex justify-normal 
 				items-start padding-x 
-				max-container
+				max-container gap-32
 				'
 			>
-				<section className='max-sm:hidden padding-b'>
+				<section className='max-sm:hidden'>
 					<Filter />
 				</section>
-				<section>Products Section</section>
+				<section>
+					<ProductItems />
+				</section>
 			</section>
 		</>
 	);

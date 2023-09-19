@@ -10,7 +10,7 @@ const Filter: React.FC = () => {
 		<div className='
 			flex flex-col justify-center 
 			items-start gap-2
-			py-5 pl-8 pr-36
+			py-5 pl-8 pr-36 max-lg:pr-20 
 			shadow-xl rounded-md
 		'>
 			<div>
@@ -44,7 +44,7 @@ const Filter: React.FC = () => {
 					onChange={filterHandler}
 				/>
 			</div>
-			<div>
+			<div className='min-w-[110px]'>
 				<h4 className='text-lg font-bold my-2'>Price</h4>
 				<CheckBox
 					id='250'
