@@ -1,3 +1,4 @@
+import Filter from '../components/Filter';
 import Search from '../components/Search';
 import { useAppSelector, useAppDispatch } from '../redux-types/hooks';
 import { fetchProducts } from '../store/productSlice';
@@ -12,11 +13,23 @@ const Products: React.FC = () => {
 		}
 	}, [dispatch, status]);
 	return (
-		<section className='padding'>
-			<div>
+		<>
+			<section className='padding-x padding-t pb-10'>
 				<Search />
-			</div>
-		</section>
+			</section>
+			<section
+				className='
+				flex justify-between 
+				items-start padding-x 
+				max-container
+				'
+			>
+				<section className='max-sm:hidden padding-b'>
+					<Filter />
+				</section>
+				<section>Products Section</section>
+			</section>
+		</>
 	);
 };
 
