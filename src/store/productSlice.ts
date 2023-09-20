@@ -97,11 +97,15 @@ export const productSlice = createSlice({
 			// console.log(current(checkedDataState)); //current gives us the current state, helpful while consoling the state in reducers. If not used, will get a proxy array which is an immediate return value not committed yer.
 			// console.log(current(state.fetchedData));
 			try {
-				console.log(current(state.filterData));
+				console.log('current-filterData', current(state.filterData));
 			} catch {
-				console.log(state.filterData);
+				console.log('filterData', state.filterData);
 			}
 			//
+		},
+		setSearchFilter: (state, action) => {
+			state.filterData = [...action.payload];
+			console.log('filterData', state.filterData);
 		},
 	},
 	extraReducers(builder) {
@@ -121,4 +125,4 @@ export const productSlice = createSlice({
 	},
 });
 
-export const { filter } = productSlice.actions;
+export const { filter, setSearchFilter } = productSlice.actions;
