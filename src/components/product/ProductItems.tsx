@@ -39,7 +39,8 @@ const ProductItems = () => {
       grid max-sm:grid-cols-1
       xl:grid-cols-3
       md:grid-cols-2
-      sm:gap-12
+      sm:gap-32 sm:gap-y-14
+			lg:gap-14 lg:gap-x-18
       max-sm:gap-8
       place-items-center
     '
