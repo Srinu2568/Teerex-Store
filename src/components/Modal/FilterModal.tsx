@@ -1,6 +1,6 @@
 import Filter from '../Filter/Filter';
 
-const FilterModal: React.FC = () => {
+const FilterModal: React.FC<{ onClick: () => void }> = (props) => {
 	return (
 		<div
 			className='
@@ -11,7 +11,7 @@ const FilterModal: React.FC = () => {
 			translate-x-[40%]
 		'
 		>
-			<Filter />
+			<Filter onClick={props.onClick} />
 		</div>
 	);
 };

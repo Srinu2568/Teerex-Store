@@ -1,6 +1,6 @@
 import FilterChild from './FilterChild';
 
-const Filter: React.FC = () => {
+const Filter: React.FC<{ onClick?: () => void }> = (props) => {
 	return (
 		<div
 			className='
@@ -10,7 +10,7 @@ const Filter: React.FC = () => {
 			shadow-xl rounded-md
 		'
 		>
-			<FilterChild />
+			<FilterChild onClick={props.onClick} />
 		</div>
 	);
 };

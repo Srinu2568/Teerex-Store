@@ -14,7 +14,7 @@ const Products: React.FC = () => {
 
 	return (
 		<>
-			{toggleModal && <FilterModal />}
+			{toggleModal && <FilterModal onClick={handleFilterToggle} />}
 			<section className='padding-x padding-t pb-10'>
 				<Search onClick={handleFilterToggle} />
 			</section>
