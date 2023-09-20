@@ -1,10 +1,10 @@
 import { ChangeEvent } from 'react';
-import CheckBox from './CheckBox';
-import { checkedDataType } from '../store/productSlice';
-import { useAppDispatch, useAppSelector } from '../redux-types/hooks';
-import { filter } from '../store/productSlice';
+import CheckBox from '../CheckBox';
+import { checkedDataType } from '../../store/productSlice';
+import { useAppDispatch, useAppSelector } from '../../redux-types/hooks';
+import { filter } from '../../store/productSlice';
 
-const FilterModal: React.FC = () => {
+const FilterChild: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const checkBoxData: checkedDataType = useAppSelector(
 		(state) => state.product.checkBoxData
@@ -23,14 +23,7 @@ const FilterModal: React.FC = () => {
 	};
 
 	return (
-		<div
-			className='
-			flex flex-col justify-center 
-			items-start gap-2
-			py-5 pl-8 pr-36 max-lg:pr-20 
-			shadow-xl rounded-md
-		'
-		>
+		<>
 			<div>
 				<h4 className='text-lg font-bold my-2'>Colour</h4>
 				<CheckBox
@@ -120,8 +113,8 @@ const FilterModal: React.FC = () => {
 					onChange={filterHandler}
 				/>
 			</div>
-		</div>
+		</>
 	);
 };
 
-export default FilterModal;
+export default FilterChild;

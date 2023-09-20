@@ -1,7 +1,7 @@
 import search from '../assets/search.png';
 import filter from '../assets/filter.png';
 
-const Search: React.FC = () => {
+const Search: React.FC<{ onClick: () => void }> = (props) => {
 	return (
 		<div
 			className='flex justify-center
@@ -33,7 +33,7 @@ const Search: React.FC = () => {
 					/>
 				</div>
 			</button>
-			<button className='max-sm:mt-7 mb-1 sm:hidden '>
+			<button className='max-sm:mt-7 mb-1 sm:hidden ' onClick={props.onClick}>
 				<div className='bg-black rounded-md py-2 px-3'>
 					<img
 						src={filter}
