@@ -4,6 +4,7 @@ const CheckBox: React.FC<{
 	id: string;
 	value: string;
 	label: string;
+	isChecked: boolean;
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }> = (props) => {
 	return (
@@ -23,6 +24,7 @@ const CheckBox: React.FC<{
 				id={props.id}
 				value={props.value}
 				onChange={props.onChange}
+				checked={props.isChecked}
 			/>
 			<label className='ml-3 flex font-bold font-palanquin ' htmlFor={props.id}>
 				{props.label}

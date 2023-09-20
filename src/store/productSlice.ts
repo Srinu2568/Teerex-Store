@@ -13,7 +13,7 @@ export interface productDataInterface {
 	quantity: number;
 }
 
-type checkedDataType = {
+export type checkedDataType = {
 	color: ['Red' | 'Blue' | 'Green'] | [];
 	gender: ['Men' | 'Women'] | [];
 	price: ['250' | '251' | '450'] | [];
