@@ -6,9 +6,8 @@ import ProductItem from './ProductItem';
 const ProductItems = () => {
 	// State and action imports
 	const dispatch = useAppDispatch();
-	const { checkBoxData, filterData, status, fetchedData } = useAppSelector(
-		(state) => state.product
-	);
+	const { checkBoxData, filterData, status, fetchedData, isSearching } =
+		useAppSelector((state) => state.product);
 
 	useEffect(() => {
 		if (status === 'idle') {
@@ -16,6 +15,7 @@ const ProductItems = () => {
 		}
 	}, [dispatch, status]);
 
+	let isSearch: boolean = isSearching;
 	let isChecked: boolean =
 		checkBoxData.color.length > 0 ||
 		checkBoxData.gender.length > 0 ||
@@ -23,13 +23,13 @@ const ProductItems = () => {
 		checkBoxData.type.length > 0;
 	let products;
 
-	if (isChecked) {
-		products = filterData.map((item) => (
-			<ProductItem key={item.id} item={item} />
+	if (isChecked || isSearch) {
+		products = filterData.map((item, idx) => (
+			<ProductItem key={idx} item={item} />
 		));
 	} else {
-		products = fetchedData.map((item) => (
-			<ProductItem key={item.id} item={item} />
+		products = fetchedData.map((item, idx) => (
+			<ProductItem key={idx} item={item} />
 		));
 	}
 

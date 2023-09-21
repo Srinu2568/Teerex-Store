@@ -5,10 +5,10 @@ import { setSearchFilter } from '../store/productSlice';
 
 const Search: React.FC<{ onClick: () => void }> = (props) => {
 	const dispatch = useAppDispatch();
-	const filterItems = useAppSelector((state) => state.product.fetchedData);
+	const { searchQuery, fetchedData } = useAppSelector((state) => state.product);
 
 	const handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		let newSearchFilteredItems = filterItems.filter((item) => {
+		let newSearchFilteredItems = fetchedData.filter((item) => {
 			if (
 				item.name
 					.toLocaleLowerCase()
@@ -19,9 +19,21 @@ const Search: React.FC<{ onClick: () => void }> = (props) => {
 			}
 		});
 		if (e.target.value.trim().length > 0) {
-			dispatch(setSearchFilter(newSearchFilteredItems));
+			dispatch(
+				setSearchFilter({
+					items: newSearchFilteredItems,
+					isSearching: true,
+					searchQuery: e.target.value,
+				})
+			);
 		} else {
-			dispatch(setSearchFilter(newSearchFilteredItems));
+			dispatch(
+				setSearchFilter({
+					items: fetchedData,
+					isSearching: false,
+					searchQuery: e.target.value,
+				})
+			);
 		}
 	};
 
@@ -34,6 +46,7 @@ const Search: React.FC<{ onClick: () => void }> = (props) => {
 		>
 			<input
 				onChange={handleInputOnChange}
+				value={searchQuery}
 				id='search'
 				className='border-b-2 border-gray-500 
           pb-2 pl-1 sm:pr-64 max-sm:mt-8

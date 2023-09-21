@@ -26,6 +26,8 @@ interface initialDataInterface {
 	status: 'idle' | 'loading' | 'succeeded' | 'failed';
 	error: string | undefined;
 	checkBoxData: checkedDataType;
+	isSearching: boolean;
+	searchQuery: string;
 }
 
 const initialData: initialDataInterface = {
@@ -34,6 +36,8 @@ const initialData: initialDataInterface = {
 	status: 'idle',
 	error: '',
 	checkBoxData: { color: [], gender: [], price: [], type: [] },
+	isSearching: false,
+	searchQuery: '',
 };
 
 // Asynchronous function to fetch products
@@ -89,23 +93,35 @@ export const productSlice = createSlice({
 			});
 
 			// Set the filteredData state
-			state.filterData = [...filteredData];
-
+			state.filterData = filteredData;
+			state.isSearching = false;
+			state.searchQuery = '';
 			// -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 
 			// Debug logs
 			// console.log(current(checkedDataState)); //current gives us the current state, helpful while consoling the state in reducers. If not used, will get a proxy array which is an immediate return value not committed yer.
 			// console.log(current(state.fetchedData));
-			try {
-				console.log('current-filterData', current(state.filterData));
-			} catch {
-				console.log('filterData', state.filterData);
-			}
+			// try {
+			// 	console.log('current-filterData', current(state.filterData));
+			// } catch {
+			// 	console.log('filterData', state.filterData);
+			// }
 			//
 		},
 		setSearchFilter: (state, action) => {
-			state.filterData = [...action.payload];
-			console.log('filterData', state.filterData);
+			// state.filterData = [...action.payload];
+			return {
+				...state,
+				isSearching: true,
+				searchQuery: action.payload.searchQuery,
+				checkBoxData: { color: [], gender: [], price: [], type: [] },
+				filterData: [...action.payload.items],
+			};
+			// try {
+			// 	console.log('current-filterData', current(state.filterData));
+			// } catch {
+			// 	console.log('filterData', state.filterData);
+			// }
 		},
 	},
 	extraReducers(builder) {
