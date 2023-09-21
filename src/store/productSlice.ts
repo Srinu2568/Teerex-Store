@@ -164,9 +164,9 @@ export const productSlice = createSlice({
 							imageURL: newItem.imageURL,
 							name: newItem.imageURL,
 							price: newItem.price,
-							quantity: newItem.price + 1,
+							quantity: newItem.quantity + 1,
 							type: newItem.type,
-							productQuantity: newItem.productQuantity! + 1,
+							productQuantity: newItem.productQuantity + 1,
 						},
 					],
 					totalQuantity: state.totalQuantity + 1,
@@ -175,7 +175,9 @@ export const productSlice = createSlice({
 			} else if (!isNew) {
 				if (passedItem.quantity > passedItem.productQuantity) {
 					let newCartData: productDataInterface[] = filterItems(
-						state.cartData,
+						state.cartData.map((item) => {
+							return { ...item }; // Make deep copies of nested objs.
+						}),
 						passedItem.id
 					);
 
