@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { filterItems } from '../utils/cart/filterItems';
 
 export interface productDataInterface {
 	id: number;
@@ -11,6 +12,7 @@ export interface productDataInterface {
 	color: string;
 	gender: string;
 	quantity: number;
+	productQuantity: number;
 }
 
 export type checkedDataType = {
@@ -23,6 +25,9 @@ export type checkedDataType = {
 interface initialDataInterface {
 	fetchedData: productDataInterface[];
 	filterData: productDataInterface[];
+	cartData: productDataInterface[];
+	totalAmount: number;
+	totalQuantity: number;
 	status: 'idle' | 'loading' | 'succeeded' | 'failed';
 	error: string | undefined;
 	checkBoxData: checkedDataType;
@@ -33,6 +38,9 @@ interface initialDataInterface {
 const initialData: initialDataInterface = {
 	fetchedData: [],
 	filterData: [],
+	cartData: [],
+	totalAmount: 0,
+	totalQuantity: 0,
 	status: 'idle',
 	error: '',
 	checkBoxData: { color: [], gender: [], price: [], type: [] },
@@ -48,7 +56,12 @@ export const fetchProducts = createAsyncThunk(
 			const response = await axios.get(
 				'https://geektrust.s3.ap-southeast-1.amazonaws.com/coding-problems/shopping-cart/catalogue.json'
 			);
-			return [...response.data];
+			let transformedData: productDataInterface = response.data.map(
+				(item: productDataInterface) => {
+					return { ...item, productQuantity: 0 };
+				}
+			);
+			return transformedData;
 		} catch (err: any) {
 			return err.message;
 		}
@@ -89,6 +102,8 @@ export const productSlice = createSlice({
 					return e.price >= 251 && e.price <= 450;
 				} else if (checkedDataState['price'].includes('450')) {
 					return e.price >= 450;
+				} else {
+					return false;
 				}
 			});
 
@@ -123,6 +138,61 @@ export const productSlice = createSlice({
 			// 	console.log('filterData', state.filterData);
 			// }
 		},
+		addToCart: (state, action) => {
+			let id = action.payload.id;
+			let newItem = state.fetchedData.find((item) => item.id === id)!;
+			let passedItem = state.cartData.find((item) => item.id === id)!;
+			let isNew: boolean = passedItem === undefined;
+			let newState: initialDataInterface;
+			if (state.cartData.length <= 0) {
+				newState = {
+					...state,
+					cartData: [{ ...newItem, productQuantity: 1 }],
+					totalQuantity: 1,
+					totalAmount: newItem.price,
+				};
+			} else if (isNew) {
+				newState = {
+					...state,
+					cartData: [
+						...state.cartData,
+						{
+							id: newItem.id,
+							color: newItem.color,
+							currency: newItem.currency,
+							gender: newItem.gender,
+							imageURL: newItem.imageURL,
+							name: newItem.imageURL,
+							price: newItem.price,
+							quantity: newItem.price + 1,
+							type: newItem.type,
+							productQuantity: newItem.productQuantity! + 1,
+						},
+					],
+					totalQuantity: state.totalQuantity + 1,
+					totalAmount: state.totalAmount + newItem.price,
+				};
+			} else if (!isNew) {
+				if (passedItem.quantity > passedItem.productQuantity) {
+					let newCartData: productDataInterface[] = filterItems(
+						state.cartData,
+						passedItem.id
+					);
+
+					newState = {
+						...state,
+						cartData: newCartData,
+						totalQuantity: state.totalQuantity + 1,
+						totalAmount: state.totalAmount + passedItem.price,
+					};
+				} else {
+					newState = state;
+				}
+			} else {
+				newState = state; // No change to state
+			}
+			return newState;
+		},
 	},
 	extraReducers(builder) {
 		builder
@@ -130,9 +200,12 @@ export const productSlice = createSlice({
 				state.status = 'loading';
 			})
 			.addCase(fetchProducts.fulfilled, (state, action) => {
-				state.status = 'succeeded';
-				state.fetchedData = state.fetchedData.concat(action.payload);
-				state.filterData = state.fetchedData.concat(action.payload);
+				return {
+					...state,
+					status: 'succeeded',
+					fetchedData: action.payload,
+					filterData: action.payload,
+				};
 			})
 			.addCase(fetchProducts.rejected, (state, action) => {
 				state.status = 'failed';
@@ -141,4 +214,4 @@ export const productSlice = createSlice({
 	},
 });
 
-export const { filter, setSearchFilter } = productSlice.actions;
+export const { filter, setSearchFilter, addToCart } = productSlice.actions;

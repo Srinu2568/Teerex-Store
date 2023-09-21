@@ -1,6 +1,12 @@
-import { productDataInterface } from '../../store/productSlice';
+import { useAppDispatch } from '../../redux-types/hooks';
+import { productDataInterface, addToCart } from '../../store/productSlice';
 
 const ProductItem: React.FC<{ item: productDataInterface }> = ({ item }) => {
+	const dispatch = useAppDispatch();
+	const addToCartHandler: () => void = () => {
+		dispatch(addToCart({ id: item.id }));
+	};
+
 	return (
 		<div
 			className='
@@ -28,15 +34,24 @@ const ProductItem: React.FC<{ item: productDataInterface }> = ({ item }) => {
         px-2 relative
         '
 			>
-				<p className='
+				<p
+					className='
           text-lg font-semibold 
-        '>Rs {item.price}</p>
-				<button className='
+        '
+				>
+					Rs {item.price}
+				</p>
+				<button
+					onClick={addToCartHandler}
+					className='
           text-base font-palanquin leading-none
           text-white bg-gray-800
           rounded-md border border-gray-800
           px-2 py-1 bottom-1 right-2 absolute
-        '>Add to Cart</button>
+        '
+				>
+					Add to Cart
+				</button>
 			</div>
 		</div>
 	);
