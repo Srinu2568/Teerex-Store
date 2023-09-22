@@ -4,6 +4,7 @@ import Main from './pages/Main';
 import Products from './pages/Products';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+import Cart from './pages/Cart';
 
 export default function App() {
 	return (
@@ -11,7 +12,7 @@ export default function App() {
 			<Routes>
 				<Route path='/' element={<Main />}>
 					<Route path='products' element={<Products />} />
-					<Route path='cart' element={<h2>in cart</h2>} />
+					<Route path='cart' element={<Cart />} />
 					<Route path='*' element={<h2>404 Not Found</h2>} />
 				</Route>
 			</Routes>

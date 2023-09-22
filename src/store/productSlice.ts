@@ -162,7 +162,7 @@ export const productSlice = createSlice({
 							currency: newItem.currency,
 							gender: newItem.gender,
 							imageURL: newItem.imageURL,
-							name: newItem.imageURL,
+							name: newItem.name,
 							price: newItem.price,
 							quantity: newItem.quantity + 1,
 							type: newItem.type,
