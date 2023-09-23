@@ -1,6 +1,11 @@
 import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { filterItems } from '../utils/cart/filterItems';
+import {
+	getLocalStorage,
+	setLocalStorage,
+} from '../utils/storage/localStorage';
+import { totalmem } from 'os';
 
 export interface productDataInterface {
 	id: number;
@@ -193,6 +198,12 @@ export const productSlice = createSlice({
 			} else {
 				newState = state; // No change to state
 			}
+			// Reflecting the changes in local storage
+			setLocalStorage('cartData', {
+				cartData: newState.cartData,
+				totalQuantity: newState.totalQuantity,
+				totalAmount: newState.totalAmount,
+			});
 			return newState;
 		},
 		removeFromCart: (state, action) => {
@@ -228,7 +239,29 @@ export const productSlice = createSlice({
 					totalAmount: state.totalAmount - passedItem.price,
 				};
 			}
+			// Reflecting the changes in local storage
+			setLocalStorage('cartData', {
+				cartData: newState.cartData,
+				totalQuantity: newState.totalQuantity,
+				totalAmount: newState.totalAmount,
+			});
+			console.log(current(state.cartData));
 			return newState;
+		},
+		setCartData: (state, action) => {
+			let localCartData: {
+				cartData: productDataInterface[];
+				totalAmount: number;
+				totalQuantity: number;
+			} = getLocalStorage('cartData');
+			if (localCartData) {
+				return {
+					...state,
+					cartData: localCartData.cartData,
+					totalAmount: localCartData.totalAmount,
+					totalQuantity: localCartData.totalQuantity,
+				};
+			}
 		},
 	},
 	extraReducers(builder) {
@@ -251,5 +284,10 @@ export const productSlice = createSlice({
 	},
 });
 
-export const { filter, setSearchFilter, addToCart, removeFromCart } =
-	productSlice.actions;
+export const {
+	filter,
+	setSearchFilter,
+	addToCart,
+	removeFromCart,
+	setCartData,
+} = productSlice.actions;

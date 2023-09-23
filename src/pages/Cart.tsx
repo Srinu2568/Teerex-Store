@@ -1,8 +1,15 @@
+import { useEffect } from 'react';
 import CartItem from '../components/Cart/CartItem';
-import { useAppSelector } from '../redux-types/hooks';
+import { useAppDispatch, useAppSelector } from '../redux-types/hooks';
+import { setCartData } from '../store/productSlice';
 
 const Cart: React.FC = () => {
 	const { cartData, totalAmount } = useAppSelector((state) => state.product);
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		dispatch(setCartData({}));
+	}, [dispatch])
 
 	return (
 		<section className='padding max-container'>
@@ -31,6 +38,9 @@ const Cart: React.FC = () => {
 							</p>
 						</div>
 					</div>
+				)}
+				{cartData.length <= 0 && (
+					<p className='font-palanquin text-lg'>Cart was empty!</p>
 				)}
 			</div>
 		</section>
