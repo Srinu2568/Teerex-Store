@@ -1,10 +1,11 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import cartLogo from '../assets/cartLogo.png';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSelector } from '../redux-types/hooks';
+import ErrorModal from '../components/Modal/ErrorModal';
 
 const Main: React.FC = () => {
-	const { totalQuantity } = useAppSelector((state) => state.product);
+	const { error, totalQuantity } = useAppSelector((state) => state.product);
 	const navigate = useNavigate();
 	const { pathname } = useLocation();
 	useEffect(() => {
@@ -13,14 +14,28 @@ const Main: React.FC = () => {
 		}
 	}, [navigate, pathname]);
 
+	// Apply nav styles on change
+	const [navStyle, setNavStyle] = useState(false);
+	const changeNavStyle = () => {
+		if (window.scrollY >= 90) {
+			setNavStyle(true);
+		} else {
+			setNavStyle(false);
+		}
+	};
+
+	window.addEventListener('scroll', changeNavStyle);
+
 	return (
 		<main>
+			{<ErrorModal error={error} />}
 			<header
-				className='
-				padding-x py-5 max-sm:py-7 fixed 
-				z-10 w-full
-				bg-[#e5e2e2]
-				'
+				className={`
+					padding-x py-5 max-sm:py-7 fixed 
+					z-10 w-full
+					bg-[#e5e2e2] 
+					${navStyle ? 'backdrop-blur-3xl' : ''}
+				`}
 			>
 				<nav
 					className='

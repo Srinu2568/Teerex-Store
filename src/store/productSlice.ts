@@ -263,6 +263,18 @@ export const productSlice = createSlice({
 				};
 			}
 		},
+		toggleError: (state, action) => {
+			if (action.payload.error) {
+				return {
+					...state,
+					error: action.payload.error,
+				};
+			}
+			return {
+				...state,
+				error: '',
+			};
+		},
 	},
 	extraReducers(builder) {
 		builder
@@ -290,4 +302,5 @@ export const {
 	addToCart,
 	removeFromCart,
 	setCartData,
+	toggleError,
 } = productSlice.actions;
