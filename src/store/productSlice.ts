@@ -164,7 +164,7 @@ export const productSlice = createSlice({
 							imageURL: newItem.imageURL,
 							name: newItem.name,
 							price: newItem.price,
-							quantity: newItem.quantity + 1,
+							quantity: newItem.quantity,
 							type: newItem.type,
 							productQuantity: newItem.productQuantity + 1,
 						},
@@ -188,10 +188,45 @@ export const productSlice = createSlice({
 						totalAmount: state.totalAmount + passedItem.price,
 					};
 				} else {
-					newState = state;
+					newState = { ...state, error: 'Max quantity reached!' };
 				}
 			} else {
 				newState = state; // No change to state
+			}
+			return newState;
+		},
+		removeFromCart: (state, action) => {
+			let id = action.payload.id;
+			let newState: initialDataInterface;
+			let newCartData: productDataInterface[];
+			let passedItem = state.cartData.find((item) => item.id === id)!;
+			if (passedItem.productQuantity > 1) {
+				newCartData = state.cartData.map((item) => {
+					if (item.id === passedItem.id) {
+						return {
+							...passedItem,
+							productQuantity: passedItem.productQuantity - 1,
+						};
+					} else {
+						return item;
+					}
+				});
+				newState = {
+					...state,
+					cartData: newCartData,
+					totalQuantity: state.totalQuantity - 1,
+					totalAmount: state.totalAmount - passedItem.price,
+				};
+			} else {
+				newCartData = state.cartData.filter(
+					(item) => item.id !== passedItem.id
+				);
+				newState = {
+					...state,
+					cartData: newCartData,
+					totalQuantity: state.totalQuantity - 1,
+					totalAmount: state.totalAmount - passedItem.price,
+				};
 			}
 			return newState;
 		},
@@ -216,4 +251,5 @@ export const productSlice = createSlice({
 	},
 });
 
-export const { filter, setSearchFilter, addToCart } = productSlice.actions;
+export const { filter, setSearchFilter, addToCart, removeFromCart } =
+	productSlice.actions;

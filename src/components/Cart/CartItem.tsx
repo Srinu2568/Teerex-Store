@@ -1,8 +1,22 @@
-import { productDataInterface } from '../../store/productSlice';
+import { useAppDispatch } from '../../redux-types/hooks';
+import {
+	addToCart,
+	removeFromCart,
+	productDataInterface,
+} from '../../store/productSlice';
 
 const CartItem: React.FC<{ productData: productDataInterface }> = ({
 	productData,
 }) => {
+	const dispatch = useAppDispatch();
+	const addToCartHandler: () => void = () => {
+		dispatch(addToCart({ id: productData.id }));
+	};
+
+	const removeFromCartHandler: () => void = () => {
+		dispatch(removeFromCart({ id: productData.id }));
+	};
+
 	return (
 		<div
 			className='
@@ -32,7 +46,7 @@ const CartItem: React.FC<{ productData: productDataInterface }> = ({
         max-sm:px-3 
         '
 			>
-				<button>
+				<button onClick={addToCartHandler}>
 					<div
 						className='
           flex justify-center items-center
@@ -47,7 +61,7 @@ const CartItem: React.FC<{ productData: productDataInterface }> = ({
 				<div className=' flex-shrink-0 '>
 					Qty: {productData.productQuantity}
 				</div>
-				<button>
+				<button onClick={removeFromCartHandler}>
 					<div
 						className='
           flex justify-center items-center
