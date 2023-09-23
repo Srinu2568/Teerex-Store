@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from '../../redux-types/hooks';
+import { useAppDispatch } from '../../redux-types/hooks';
 import { toggleError } from '../../store/productSlice';
 
 const ErrorModal: React.FC<{ error: string | undefined }> = ({ error }) => {

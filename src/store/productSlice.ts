@@ -5,7 +5,6 @@ import {
 	getLocalStorage,
 	setLocalStorage,
 } from '../utils/storage/localStorage';
-import { totalmem } from 'os';
 
 export interface productDataInterface {
 	id: number;

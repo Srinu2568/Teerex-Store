@@ -16,6 +16,8 @@ const Search: React.FC<{ onClick: () => void }> = (props) => {
 					.includes(e.target.value.toLowerCase().trim())
 			) {
 				return true;
+			} else {
+				return false;
 			}
 		});
 		if (e.target.value.trim().length > 0) {
