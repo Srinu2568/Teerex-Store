@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router';
-import { Navigate } from 'react-router-dom';
 import Main from './pages/Main';
 import Products from './pages/Products';
 import { Provider } from 'react-redux';
@@ -13,7 +12,14 @@ export default function App() {
 				<Route path='/' element={<Main />}>
 					<Route path='products' element={<Products />} />
 					<Route path='cart' element={<Cart />} />
-					<Route path='*' element={<h2>404 Not Found</h2>} />
+					<Route
+						path='*'
+						element={
+							<section className='padding text-2xl font-palanquin flex justify-center font-bold items-center'>
+								404 Not Found
+							</section>
+						}
+					/>
 				</Route>
 			</Routes>
 		</Provider>

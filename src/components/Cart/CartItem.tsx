@@ -51,7 +51,7 @@ const CartItem: React.FC<{ productData: productDataInterface }> = ({
 						className='
           flex justify-center items-center
           bg-gray-200 rounded-full
-            w-5 h-5 hover:bg-gray-100
+            w-5 h-5 active:bg-gray-100
             transition ease-in-out delay-100
         '
 					>
@@ -66,8 +66,9 @@ const CartItem: React.FC<{ productData: productDataInterface }> = ({
 						className='
           flex justify-center items-center
           bg-gray-200 rounded-full
-            w-5 h-5 hover:bg-gray-100
-            transition ease-in-out delay-100
+            w-5 h-5 active:bg-gray-100
+            transition ease-in-out 
+						delay-100 duration-150
         '
 					>
 						-

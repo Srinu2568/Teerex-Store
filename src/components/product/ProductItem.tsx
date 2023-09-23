@@ -48,6 +48,9 @@ const ProductItem: React.FC<{ item: productDataInterface }> = ({ item }) => {
           text-white bg-gray-800
           rounded-md border border-gray-800
           px-2 py-1 bottom-1 right-2 absolute
+				
+				active:bg-white-400 active:text-black
+					transition ease-in-out
         '
 				>
 					Add to Cart

@@ -1,5 +1,5 @@
 import { useAppSelector, useAppDispatch } from '../../redux-types/hooks';
-import { fetchProducts } from '../../store/productSlice';
+import { fetchProducts, setCartData } from '../../store/productSlice';
 import { useEffect } from 'react';
 import ProductItem from './ProductItem';
 
@@ -12,6 +12,7 @@ const ProductItems = () => {
 	useEffect(() => {
 		if (status === 'idle') {
 			dispatch(fetchProducts());
+			dispatch(setCartData({}));
 		}
 	}, [dispatch, status]);
 
